@@ -4,16 +4,6 @@ FROM node:18
 # Create app directory
 WORKDIR /backend-app
 
-# Copy environment variable file
-COPY .env.dev .
-
-# Set environment variable from file
-ENV KEYCLOAK_URL $(cat /backend-app/.env.dev)
-ENV KEYCLOAK_REALM $(cat /backend-app/.env.dev)
-ENV KEYCLOAK_CLIENT_ID $(cat /backend-app/.env.dev)
-ENV KEYCLOAK_CLIENT_SECRET $(cat /backend-app/.env.dev)
-
-
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
 

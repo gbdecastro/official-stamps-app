@@ -66,7 +66,10 @@ services:
       dockerfile: Dockerfile.dev
     container_name: nest-app
     environment:
-      DB_SERVER: postgres-db    
+      KEYCLOAK_URL: http://<your-ip>:8080
+      KEYCLOAK_REALM: official-stamps-portal
+      KEYCLOAK_CLIENT_ID: official-stamps-api
+      KEYCLOAK_CLIENT_SECRET: P8kj1dLIALCxsJ3PIaPvVL2Kh9mNq858
     ports:
       - 3000:3000
     depends_on:
