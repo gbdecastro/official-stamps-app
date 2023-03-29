@@ -1,0 +1,40 @@
+{
+    "_embedded": {
+        "officialStampResponseList": [
+            {
+                "id": 2,
+                "name": "Selo 2",
+                "value": 20.0,
+                "createdAt": "2023-01-19T13:56:52.920676",
+                "updatedAt": "2023-01-19T13:56:52.920676"
+            },
+            {
+                "id": 3,
+                "name": "Selo",
+                "value": 50.0,
+                "createdAt": "2023-01-27T11:29:46.480285",
+                "updatedAt": "2023-01-27T11:29:46.480285"
+            }
+        ]
+    },
+    "_links": {
+        "self": {
+            "href": "http://localhost:8090/api/v1/official-stamps"
+        },
+        "create": {
+            "href": "http://localhost:8090/api/v1/official-stamps"
+        },
+        "update": {
+            "href": "http://localhost:8090/api/v1/official-stamps/{id}",
+            "templated": true
+        },
+        "delete": {
+            "href": "http://localhost:8090/api/v1/official-stamps/{id}",
+            "templated": true
+        },
+        "find-one": {
+            "href": "http://localhost:8090/api/v1/official-stamps/{id}",
+            "templated": true
+        }
+    }
+}

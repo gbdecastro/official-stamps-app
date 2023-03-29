@@ -1,0 +1,87 @@
+:host {
+    display: block;
+
+    .toggle-menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        padding: 0 1rem -5px 1rem;
+        box-sizing: border-box;
+        position: fixed;
+        top: 0;
+        z-index: 999;
+        background-color: #fff;
+        border-right: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .toggle-divider {
+        border-right: 1px solid #e0e0e0;
+    }
+
+    .mat-drawer-content {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .mat-drawer,
+    .toggle,
+    .toggle-divider {
+        width: 100px;
+    }
+
+    &,
+    .mat-drawer-container {
+        min-height: calc(100vh - 50px);
+        .container {
+            padding-left: 2rem;
+            padding-right: 0.5rem;
+        }
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+        padding-top: 50px;
+
+        .item-menu {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            cursor: pointer;
+
+            &:first-child {
+                margin-top: 2rem;
+            }
+
+            &:hover {
+                opacity: 0.7;
+            }
+
+            &.logo img {
+                width: 25px;
+                height: 35px;
+            }
+
+            & .profile {
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                cursor: pointer;
+            }
+        }
+
+        .divider {
+            border: 1px solid #e0e0e0;
+        }
+    }
+
+    .logout {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 99px;
+    }
+}

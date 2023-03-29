@@ -1,0 +1,104 @@
+<mat-card class="mb-4">
+    <mat-card-header>
+        <div class="d-flex flex-column gap-2">
+            <div class="d-flex align-items-center gap-3">
+                <mat-icon>apartment</mat-icon>
+                <mat-card-title>{{ registryOffice.name }}</mat-card-title>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+                <mat-chip class="badge bg-primary p-2">
+                    <span class="text-white">
+                        {{ registryOffice.wallet.balance | currency | secret:registryOfficeSecret }}
+                    </span>
+                </mat-chip>
+                <button mat-icon-button (click)="registryOfficeSecret = !registryOfficeSecret">
+                    <mat-icon *ngIf="registryOfficeSecret" class="text-simple">visibility</mat-icon>
+                    <mat-icon *ngIf="!registryOfficeSecret" class="text-simple">visibility_off</mat-icon>
+                </button>
+
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content class="p-5">
+        <div class="d-flex justify-content-between flew-wrap mb-5">
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex gap-2">
+                    <span class="fw-bold">Region:</span>
+                    <span>{{registryOffice.region | secret:registryOfficeSecret}}</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <span class="fw-bold">City:</span>
+                    <span>{{registryOffice.city | secret:registryOfficeSecret}}</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <span class="fw-bold gap-2">County:</span>
+                    <span>{{registryOffice.county | secret:registryOfficeSecret}}</span>
+                </div>
+            </div>
+            <div class="d-flex flex-column align-items-center gap-3">
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    <mat-icon class="text-simple">
+                        branding_watermark
+                    </mat-icon>
+                    <h3 class="text-success">Official Stamps</h3>
+                </div>
+                <h3 class="text-simple">{{ totalOfficialStamps | secret:registryOfficeSecret }}</h3>
+            </div>
+        </div>
+
+    </mat-card-content>
+
+    <mat-card-footer>
+
+    </mat-card-footer>
+</mat-card>
+
+<div class="row">
+    <div class="col-md-4 col-xxl-3 mb-3" *ngFor="let officialStamp of officialStamps">
+        <mat-card>
+            <mat-card-header>
+                <div class="d-flex w-100 align-items-center justify-content-between">
+                    <div class="d-flex gap-2">
+                        <div class="d-flex align-items-center gap-3">
+                            <mat-icon>branding_watermark</mat-icon>
+                            <mat-card-title>{{officialStamp.name}}</mat-card-title>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <mat-chip class="badge bg-primary p-2">
+                                <span class="text-white">
+                                    <!-- {{ getTotalPerOfficialStamp(officialStamp.name) | secret:officialStampSecret[officialStamp.id] }} -->
+                                    {{ officialStamp.value | currency | secret:officialStampSecret[officialStamp.id] }}
+                                </span>
+                            </mat-chip>
+                        </div>
+                    </div>
+
+                    <button mat-icon-button
+                        (click)="officialStampSecret[officialStamp.id] = !officialStampSecret[officialStamp.id]">
+                        <mat-icon *ngIf="officialStampSecret[officialStamp.id]" class="text-simple">visibility
+                        </mat-icon>
+                        <mat-icon *ngIf="!officialStampSecret[officialStamp.id]" class="text-simple">visibility_off
+                        </mat-icon>
+                    </button>
+
+                </div>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="pt-2 d-flex align-items-center justify-content-between">
+                    <div class="d-flex">
+                        <div class="text-simple fw-bolder me-2">
+                            Quantity:
+                        </div>
+                        <div>{{ totalPerOfficialStamps[officialStamp.name] }}</div>
+                    </div>
+                    <div class="d-flex">
+                        <button class="text-light" color="primary" mat-raised-button (click)="onBuy(officialStamp)">
+                            Buy
+                        </button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

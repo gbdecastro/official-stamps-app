@@ -1,0 +1,71 @@
+<mat-card>
+    <mat-card-header>
+        <div class="d-flex w-100 justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <mat-icon>branding_watermark</mat-icon>
+                <mat-card-title>Official Stamps</mat-card-title>
+            </div>
+            <div class="cursor-pointer" (click)="onRefresh()">
+                <mat-icon>refresh</mat-icon>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content class="p-5">
+
+        <app-loader *ngIf="loading"></app-loader>
+
+        <div [hidden]="loading">
+            <div class="d-flex w-100 justify-content-between" [formGroup]="formFilter">
+                <mat-form-field>
+                    <mat-label>Filter</mat-label>
+                    <input data-cy="filter" matInput formControlName="filter" placeholder="Filtering" #input>
+                    <button data-cy="filter-clear" *ngIf="filter.value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="filter.setValue('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <button data-cy="add-official-stamp" mat-icon-button color="primary" (click)="onAdd()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+            <table data-cy="official-stamp-table" mat-table [dataSource]="dataSource" matSort>
+
+                <ng-container *ngFor="let column of columns; let i = index" [matColumnDef]="column">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayColumns[i]}} </th>
+                    <td data-cy="table-cell" mat-cell *matCellDef="let element">
+                        <ng-container [ngSwitch]="column">
+                            <ng-container *ngSwitchCase="'actions'">
+                                <button mat-icon-button (click)="onEdit(element)" data-cy="edit">
+                                    <mat-icon class="text-primary">edit</mat-icon>
+                                </button>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'value'">
+                                {{element[column] | currency}}
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                {{element[column]}}
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" [attr.colspan]="columns.length">
+                        <div data-cy="no-data" class="no-data">
+                            No data matching the filter: '{{filter.value}}'
+                        </div>
+                    </td>
+                </tr>
+
+                <tr data-cy="table-header-row" mat-header-row *matHeaderRowDef="columns"></tr>
+                <tr data-cy="table-row" mat-row *matRowDef="let row; columns: columns;"></tr>
+            </table>
+        </div>
+    </mat-card-content>
+
+    <mat-card-footer>
+        <mat-paginator [hidden]="loading" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select a page">
+        </mat-paginator>
+    </mat-card-footer>
+</mat-card>

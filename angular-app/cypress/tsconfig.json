@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "**/*.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "sourceMap": false,
+    "types": [
+      "cypress"
+    ],
+    "paths": {
+      "@portal/*": [
+        "../src/app/*"
+      ]
+    }
+  }
+}

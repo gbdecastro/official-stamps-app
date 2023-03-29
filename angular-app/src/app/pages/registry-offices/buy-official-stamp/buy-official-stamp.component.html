@@ -1,0 +1,26 @@
+<div mat-dialog-title class="border">
+    <div class="d-flex w-100 justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <mat-icon>branding_watermark</mat-icon>
+            Buy a {{data.officialStamp.name}}
+        </div>
+        <mat-icon mat-dialog-close class="text-simple">close</mat-icon>
+    </div>
+</div>
+<div mat-dialog-content class="mt-4">
+    <div class="d-flex flex-column gap-3 flex-wrap" [formGroup]="form">
+        <mat-form-field>
+            <mat-label>Quantity</mat-label>
+            <input matInput formControlName="quantity" placeholder="Quantity">
+            <button *ngIf="quantity.value" matSuffix mat-icon-button aria-label="Clear" (click)="quantity.reset()">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="quantity.invalid">Quantity is required!</mat-error>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-stroked-button color="primary" (click)="save()" [disabled]="form.invalid">
+        Buy
+    </button>
+</div>

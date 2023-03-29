@@ -1,0 +1,35 @@
+<div mat-dialog-title class="border">
+    <div class="d-flex w-100 justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <mat-icon>apartment</mat-icon>
+            {{mode}} Registry Office
+        </div>
+        <mat-icon mat-dialog-close class="text-simple">close</mat-icon>
+    </div>
+</div>
+<div mat-dialog-content class="mt-2">
+    <div class="d-flex flex-column gap-3 flex-wrap" *ngIf="form" [formGroup]="form">
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input data-cy="name" matInput type="text" formControlName="name" placeholder="Name" />
+            <button *ngIf="name.value" matSuffix mat-icon-button aria-label="Clear" (click)="name.reset()">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-hint>
+                <mat-hint align="end">{{name.value.length}}/255</mat-hint>
+            </mat-hint>
+            <mat-error *ngIf="name.invalid">Name is required!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Value</mat-label>
+            <input data-cy="value" class="text-left" matInput type="type" formControlName="value" currencyMask />
+            <mat-error *ngIf="value.invalid">Value is required!</mat-error>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button data-cy="save-submit" mat-stroked-button color="primary" (click)="save()" [disabled]="form.invalid">
+        {{mode}}
+    </button>
+</div>

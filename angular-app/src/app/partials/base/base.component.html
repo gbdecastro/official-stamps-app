@@ -1,0 +1,58 @@
+<ng-container *ngIf="draw">
+    <div class="wpx-100 toggle-menu"
+        [ngClass]="{ 'border-0': !draw.opened, 'bg-transparent': !draw.opened, 'wpx-50': !draw.opened}">
+        <mat-icon class="cursor-pointer toggle-icon" (click)="onToggleMenu()">menu
+        </mat-icon>
+    </div>
+</ng-container>
+
+<mat-drawer-container>
+    <mat-drawer mode="side" [opened]="true">
+        <div class="menu h-100 mx-3">
+
+            <!-- LOGO -->
+            <div class="item-menu logo">
+                <a routerLink="" routerLinkActive="active">
+                    <img src="assets/qr_code.svg">
+                </a>
+            </div>
+
+            <div class="item-menu divider"></div>
+
+            <!-- Photo Profile -->
+            <div class="item-menu">
+                <img class="profile" src="assets/avatar.png" placement="right" container="body" [ngbPopover]="profile"
+                    popoverTitle="User Info">
+                <ng-template #profile>
+                    <p>
+                        <strong>Name:</strong> {{userLogged['given_name']}} {{userLogged['family_name']}}
+                    </p>
+                    <p>
+                        <strong>E-mail:</strong> {{userLogged['email']}}
+                    </p>
+                </ng-template>
+            </div>
+
+            <div class="item-menu divider"></div>
+
+            <!-- Menu Fixed -->
+            <div class="item-menu" *ngFor="let item of menuItems" [routerLink]="item.path"
+                routerLinkActive="item-menu-active">
+                <mat-icon class="text-secondary">{{item.icon}}</mat-icon>
+            </div>
+
+            <div class="item-menu divider"></div>
+
+            <div class="item-menu logout">
+                <mat-icon class="text-secondary">
+                    logout
+                </mat-icon>
+            </div>
+        </div>
+    </mat-drawer>
+    <mat-drawer-content>
+        <div class="container mt-2">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

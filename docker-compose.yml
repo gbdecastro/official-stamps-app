@@ -1,0 +1,93 @@
+version: '3'
+services:
+
+  postgres-db:
+    image: "postgres"
+    container_name: postgres-db
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=official_stamp_portal_db
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postgres
+
+  ethereum-network:
+    image: ethereum/client-go
+    container_name: ethereum-network
+    volumes:
+      - ./eth-network:/eth-network:rw
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    command: --datadir /eth-network/node1 --syncmode "full" --nodiscover --http --http.addr 0.0.0.0 --http.port 8545 --http.api "personal,eth,net,admin,web3,txpool,miner" --http.corsdomain "*" --mine --miner.threads 4 --miner.etherbase '0xf8717030f744339104c0b8e1b73799c9931687cb' --port 30303 --networkid 12345 --allow-insecure-unlock --unlock 0xf8717030f744339104c0b8e1b73799c9931687cb --password /eth-network/node1/password --authrpc.port 8552 --maxpeers 0
+
+  keycloak-db:
+    image: "postgres"
+    container_name: keycloak-db
+    volumes:
+      - keycloak-db-volume:/var/lib/postgresql/data
+    ports:
+      - 5433:5433
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postgres
+    command: -p 5433
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.0.1
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak/realm:/opt/keycloak/data/import
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME: <your-ip>
+      KC_DB: postgres
+      KC_DB_URL_HOST: keycloak-db
+      KC_DB_URL_PORT: 5433
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: secret  
+      KC_DB_SCHEMA: public
+    depends_on:
+      - keycloak-db
+    command:
+      - start-dev
+      - --import-realm
+  
+  nest-app:
+    build:
+      context: ./nest-app
+      dockerfile: Dockerfile.dev
+    container_name: nest-app
+    environment:
+      DB_SERVER: postgres-db    
+    ports:
+      - 3000:3000
+    depends_on:
+      - keycloak  
+    volumes:
+      - ./nest-app:/backend-app
+      - /backend-app/node_modules      
+
+  angular-app:
+    build:
+      context: ./angular-app
+      dockerfile: Dockerfile.dev
+    container_name: angular-app
+    ports:
+      - 4200:4200
+    depends_on:
+      - nest-app
+    volumes:
+      - ./angular-app:/frontend-app
+      - /frontend-app/node_modules
+
+volumes:
+  postgres-volume:
+  keycloak-db-volume:

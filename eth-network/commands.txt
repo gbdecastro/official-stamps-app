@@ -1,0 +1,5 @@
+geth --datadir node1 --syncmode "full" --nodiscover --http --http.addr localhost --http.port 8545 --http.api "personal,eth,net,admin,web3,txpool,miner" --http.corsdomain "*" --mine --miner.threads 4 --miner.etherbase '0xf8717030f744339104c0b8e1b73799c9931687cb' --port 30304 --networkid 12345 --allow-insecure-unlock --unlock 0xf8717030f744339104c0b8e1b73799c9931687cb --password node1/password --authrpc.port 8552 --maxpeers 0
+
+geth --datadir node2 --syncmode "full" --http --http.addr localhost --http.port 8546 --http.api "personal,eth,net,admin,web3,txpool,miner" --http.corsdomain "*" --mine --miner.etherbase '0xf8717030f744339104c0b8e1b73799c9931687cb' --port 30306 --networkid 12345 --allow-insecure-unlock --unlock 0xa27d3bd83a4c1468be2d646125e43cca2547ec4d --password node2/password --authrpc.port 8553
+
+geth attach node1/geth.ipc

@@ -1,0 +1,65 @@
+<div mat-dialog-title class="border">
+    <div class="d-flex w-100 justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <mat-icon>apartment</mat-icon>
+            {{mode}} Registry Office
+        </div>
+        <mat-icon mat-dialog-close class="text-simple">close</mat-icon>
+    </div>
+</div>
+<div mat-dialog-content class="mt-2">
+    <div class="d-flex flex-column gap-3 flex-wrap" [formGroup]="form">
+        <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" placeholder="Name">
+            <button *ngIf="name.value" matSuffix mat-icon-button aria-label="Clear" (click)="name.reset()">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-hint>
+                <mat-hint align="end">{{name.value.length}}/255</mat-hint>
+            </mat-hint>
+            <mat-error *ngIf="name.invalid">Name is required!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city" placeholder="City">
+            <button *ngIf="city.value" matSuffix mat-icon-button aria-label="Clear" (click)="city.reset()">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-hint>
+                <mat-hint align="end">{{city.value.length}}/255</mat-hint>
+            </mat-hint>
+            <mat-error *ngIf="city.invalid">City is required!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Region</mat-label>
+            <input matInput formControlName="region" placeholder="Region">
+            <button *ngIf="region.value" matSuffix mat-icon-button aria-label="Clear" (click)="region.reset()">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-hint>
+                <mat-hint align="end">{{region.value.length}}/255</mat-hint>
+            </mat-hint>
+            <mat-error *ngIf="region.invalid">Region is required!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>County</mat-label>
+            <input matInput formControlName="county" placeholder="County">
+            <button *ngIf="county.value" matSuffix mat-icon-button aria-label="Clear" (click)="county.reset()">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-hint>
+                <mat-hint align="end">{{county.value.length}}/255</mat-hint>
+            </mat-hint>
+            <mat-error *ngIf="county.invalid">County is required!</mat-error>
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-stroked-button color="primary" (click)="save()" [disabled]="form.invalid">
+        {{mode}}
+    </button>
+</div>
