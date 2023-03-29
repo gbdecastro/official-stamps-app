@@ -31,16 +31,16 @@ _Using WSL you must add the WSL IP in **hosts** windows file combining with **of
 
 ```bash
   ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1
-  <your-wsl-ip>
+  <your-ip>
 ```
 
 -   **Second**: You must update the Enviroments using your WSL IP directly in the files
 
-    > **_docker-compose.yml_** search by **_<your-wsl-ip>_** and replace for the ip presented in the first step.
+    > **_docker-compose.yml_** search by `<your-ip>` and replace for the ip presented in the first step.
 
-    > **_.env.dev in nest-app/_** search by **_<your-wsl-ip>_** and replace for the ip presented in the first step.
+    > **_.env.dev in nest-app/_** search by `<your-ip>` and replace for the ip presented in the first step.
 
-    > **_.enviroment.development.ts in angular-app/_** search by **_<your-wsl-ip>_** and replace for the ip presented in the first step
+    > **_.enviroment.development.ts in angular-app/_** search by `<your-ip>` and replace for the ip presented in the first step
 
 **3. Run Docker Compose**
 
@@ -64,7 +64,7 @@ _Using WSL you must add the WSL IP in **hosts** windows file combining with **of
 
 **4. Setup Keycloak**
 
--   Go to [http://official-stamps:8080/admin/master/console/#/official-stamps-portal](http://official-stamps:8080/admin/master/console/#/official-stamps-portal)
+-   Go to Keycloak [http://your-ip:8080/admin/master/console/#/official-stamps-portal](http://localhost:8080/admin/master/console/#/official-stamps-portal)
 -   Username: **admin** / Password: **admin**
 -   Access Clients
     > -   Search by **official-stamps-api**
@@ -84,6 +84,12 @@ _Using WSL you must add the WSL IP in **hosts** windows file combining with **of
 **5. Update Enviroments on Nestjs**
 
 -   Open the .env.dev and replace **<client-secret>** by the client secret generated in the previous step
+
+```bash
+KEYCLOAK_CLIENT_SECRET=<client-secret>
+```
+
+-   Update also the environment of keycloak service in docker-compose.yml
 
 ```bash
 KEYCLOAK_CLIENT_SECRET=<client-secret>

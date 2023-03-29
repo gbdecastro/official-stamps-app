@@ -69,11 +69,13 @@ services:
       KEYCLOAK_URL: http://<your-ip>:8080
       KEYCLOAK_REALM: official-stamps-portal
       KEYCLOAK_CLIENT_ID: official-stamps-api
-      KEYCLOAK_CLIENT_SECRET: P8kj1dLIALCxsJ3PIaPvVL2Kh9mNq858
+      KEYCLOAK_CLIENT_SECRET: <client-secret>
     ports:
       - 3000:3000
     depends_on:
-      - keycloak  
+      - ethereum-network
+      - postgres-db
+      - keycloak
     volumes:
       - ./nest-app:/backend-app
       - /backend-app/node_modules      
