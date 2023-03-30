@@ -1,3 +1,4 @@
 docker-compose.yml
-
 keycloak/docker-compose.yml
+nest-app/src/infrastructure/services/contract/build/contracts/OfficialStampContract.json
+truffle-app/build/contracts/OfficialStampContract.json
