@@ -1,0 +1,41 @@
+{
+    "id": "3895e743-1ff1-4789-949c-f1abad823815",
+    "username": "g.castro",
+    "firstName": "Gabriel",
+    "lastName": "Castro",
+    "email": "g.castro@sidi.org.br",
+    "emailVerified": false,
+    "userProfileMetadata": {
+        "attributes": [
+            {
+                "name": "username",
+                "displayName": "${username}",
+                "required": true,
+                "readOnly": true,
+                "validators": {}
+            },
+            {
+                "name": "email",
+                "displayName": "${email}",
+                "required": true,
+                "readOnly": false,
+                "validators": { "email": { "ignore.empty.value": true } }
+            },
+            {
+                "name": "firstName",
+                "displayName": "${firstName}",
+                "required": true,
+                "readOnly": false,
+                "validators": {}
+            },
+            {
+                "name": "lastName",
+                "displayName": "${lastName}",
+                "required": true,
+                "readOnly": false,
+                "validators": {}
+            }
+        ]
+    },
+    "attributes": {}
+}

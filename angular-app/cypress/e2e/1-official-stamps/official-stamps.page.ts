@@ -15,21 +15,29 @@ export class OfficialStampPage {
     public readonly MAT_SNACK_BAR = '.mat-mdc-simple-snack-bar';
 
     public readonly API_URL = Cypress.env('api_url') + '/official-stamps';
+    public readonly KEYCLOAK_TOKEN_URL =
+        Cypress.env('keycloak_url') +
+        'realms/official-stamps-portal/protocol/openid-connect/token';
+    public readonly KEYCLOAK_ACCOUNT_URL =
+        Cypress.env('keycloak_url') + 'realms/official-stamps-portal/account';
 
-    public readonly officialStamps =
-        officialStampResponse._embedded.officialStampResponseList;
+    public readonly officialStamps = officialStampResponse.data;
     public readonly OFFICIAL_STAMP_ID = 999;
     public readonly OFFICIAL_STAMP_NAME = 'Official Stamps CY';
     public readonly OFFICIAL_STAMP_VALUE = 150; // to make R$ 1,50
     private RESPONSE_AFTER_SAVE = {
         body: {
-            id: this.OFFICIAL_STAMP_ID,
-            name: this.OFFICIAL_STAMP_NAME,
-            value: this.OFFICIAL_STAMP_VALUE / 100,
+            data: {
+                id: this.OFFICIAL_STAMP_ID,
+                name: this.OFFICIAL_STAMP_NAME,
+                value: this.OFFICIAL_STAMP_VALUE / 100,
+            },
         },
     };
 
-    public goToPage = () => {
+    public goToPage = (role: string) => {
+        this.loadUserByRole(role);
+
         cy.intercept('GET', this.API_URL, {
             fixture: 'official-stamps.json',
         }).as('official-stamps');
@@ -39,6 +47,18 @@ export class OfficialStampPage {
         cy.wait('@official-stamps');
         cy.get('body').find(this.TAG).should('not.be.empty');
     };
+
+    public loadUserByRole(role: string) {
+        if (role === 'admin') {
+            cy.intercept('GET', this.KEYCLOAK_TOKEN_URL, {
+                fixture: 'admin-token.json',
+            }).as('official-stamps');
+
+            cy.intercept('GET', this.KEYCLOAK_ACCOUNT_URL, {
+                fixture: 'admin-account.json',
+            }).as('official-stamps');
+        }
+    }
 
     public filterTable = (value: string) => {
         const filter = cy.get(this.FILTER);
@@ -73,11 +93,17 @@ export class OfficialStampPage {
         this.resetForm();
         this.fillForm();
 
-        cy.intercept(
-            'PUT',
-            `${this.API_URL}/${officialStamp.id}`,
-            this.RESPONSE_AFTER_SAVE
-        ).as('update-official-stamp');
+        cy.intercept('PUT', `${this.API_URL}/${officialStamp.id}`, {
+            data: {
+                id: 1,
+                name: this.OFFICIAL_STAMP_NAME,
+                value: 1,
+                createdAt: '2023-03-30T11:42:32.173Z',
+            },
+            isArray: false,
+            method: 'PUT',
+            path: '/api/v1/official-stamps/1',
+        }).as('update-official-stamp');
 
         cy.get(this.SUBMIT_DIALOG).click();
 

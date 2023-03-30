@@ -1,12 +1,16 @@
 import { TableUtils } from '../../utils/table.utils';
 import { OfficialStampPage } from './official-stamps.page';
 
-describe('Official Stamp - Filtering and Validation Table', () => {
+describe('Official Stamp - Management Official Stamps', () => {
     const page = new OfficialStampPage();
     const tableUtils = new TableUtils();
 
+    beforeEach(() => {
+        cy.login('g.castro', '123');
+    });
+
     it('Handling error network', () => {
-        cy.intercept('GET', 'http://localhost:8090/api/v1/official-stamps', {
+        cy.intercept('GET', page.API_URL, {
             statusCode: 500,
             body: {
                 code: 500,
@@ -19,12 +23,12 @@ describe('Official Stamp - Filtering and Validation Table', () => {
 
         cy.get(page.MAT_SNACK_BAR).should(
             'contain.text',
-            'Something is wrong!'
+            'Something wrong happened'
         );
     });
 
     it('Filter table', () => {
-        page.goToPage();
+        page.goToPage('admin');
 
         const loading = cy.get('app-loader');
         loading.should('exist');
@@ -63,7 +67,7 @@ describe('Official Stamp - Filtering and Validation Table', () => {
     });
 
     it('Add a new official stamp', () => {
-        page.goToPage();
+        page.goToPage('admin');
 
         const addButton = cy.get(page.ADD_BUTTON);
         addButton.should('be.enabled');
@@ -91,7 +95,7 @@ describe('Official Stamp - Filtering and Validation Table', () => {
     });
 
     it('Update a official stamp', () => {
-        page.goToPage();
+        page.goToPage('admin');
 
         //Edit the first official stamps
         page.filterTableAndEdit(page.officialStamps[0]);
