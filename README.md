@@ -20,7 +20,7 @@
 **2. Go to project folder**
 
 ```bash
-  cd official-stamps-api
+  cd official-stamps-app
 ```
 
 **NOTES:**
