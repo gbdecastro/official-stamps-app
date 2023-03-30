@@ -24,9 +24,11 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                <button data-cy="add-official-stamp" mat-icon-button color="primary" (click)="onAdd()">
-                    <mat-icon>add</mat-icon>
-                </button>
+                <div class="d-inline-block" appDisableButtonByRole="admin">
+                    <button data-cy="add-official-stamp" mat-icon-button color="primary" (click)="onAdd()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
             </div>
 
             <table data-cy="official-stamp-table" mat-table [dataSource]="dataSource" matSort>
@@ -36,9 +38,11 @@
                     <td data-cy="table-cell" mat-cell *matCellDef="let element">
                         <ng-container [ngSwitch]="column">
                             <ng-container *ngSwitchCase="'actions'">
-                                <button mat-icon-button (click)="onEdit(element)" data-cy="edit">
-                                    <mat-icon class="text-primary">edit</mat-icon>
-                                </button>
+                                <div class="d-inline-block" appDisableButtonByRole="admin">
+                                    <button mat-icon-button (click)="onEdit(element)" data-cy="edit">
+                                        <mat-icon class="text-primary">edit</mat-icon>
+                                    </button>
+                                </div>
                             </ng-container>
                             <ng-container *ngSwitchCase="'value'">
                                 {{element[column] | currency}}

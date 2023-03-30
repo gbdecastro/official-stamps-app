@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RegistryOfficeResponse } from '@portal/core/interfaces/response';
 import { OfficialStampService } from '@portal/pages/official-stamps/services/official-stamp.service';
@@ -28,7 +29,8 @@ export class RegistryOfficeDetailComponent implements OnInit {
         private activateRoute: ActivatedRoute,
         private registryOfficeService: RegistryOfficeService,
         private officialStampService: OfficialStampService,
-        private matDialog: MatDialog
+        private matDialog: MatDialog,
+        private readonly matSnackBar: MatSnackBar
     ) {
         this.activateRoute.data.subscribe(({ registryOffice }) => {
             this.registryOffice = registryOffice;
@@ -64,6 +66,10 @@ export class RegistryOfficeDetailComponent implements OnInit {
                 this.officialStamps = data;
                 this.officialStamps.forEach((os) => {
                     this.officialStampSecret[os.id] = false;
+                    this.totalPerOfficialStamps[os.name] = this
+                        .totalPerOfficialStamps[os.name]
+                        ? this.totalPerOfficialStamps[os.name]
+                        : 0;
                 });
             });
     }
@@ -80,6 +86,11 @@ export class RegistryOfficeDetailComponent implements OnInit {
                 this.registryOfficeService
                     .buyToken(this.registryOffice.id, officialStamp, quantity)
                     .subscribe((item) => {
+                        this.matSnackBar.open(
+                            'Official Stamp(s) purchased Successufly',
+                            'Close'
+                        );
+
                         this.totalPerOfficialStamps[officialStamp.name] +=
                             quantity;
                         this.totalOfficialStamps += quantity;

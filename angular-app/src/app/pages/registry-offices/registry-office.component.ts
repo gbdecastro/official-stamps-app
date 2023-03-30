@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -54,7 +55,8 @@ export class RegistryOfficeComponent implements OnInit {
         private readonly registryService: RegistryOfficeService,
         private readonly fb: FormBuilder,
         private readonly matDialog: MatDialog,
-        private readonly router: Router
+        private readonly router: Router,
+        private readonly matSnackBar: MatSnackBar
     ) {
         this.formFilter = this.fb.group({
             filter: this.fb.control(''),
@@ -157,6 +159,10 @@ export class RegistryOfficeComponent implements OnInit {
             )
             .subscribe((data) => {
                 this.dataSource.data = [...this.dataSource.data, data];
+                this.matSnackBar.open(
+                    'Registry Office Created Successufly',
+                    'Close'
+                );
             });
     }
 
@@ -177,6 +183,10 @@ export class RegistryOfficeComponent implements OnInit {
                     (r) => r.id === data.id
                 );
                 this.dataSource.data[index] = data;
+                this.matSnackBar.open(
+                    'Registry Office Updated Successufly',
+                    'Close'
+                );
             });
     }
 }

@@ -14,7 +14,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+    MatSnackBarModule,
+    MAT_SNACK_BAR_DEFAULT_OPTIONS,
+} from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { OfficialStampService } from '@portal/pages/official-stamps/services/official-stamp.service';
@@ -74,6 +77,10 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
             },
         },
         { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
+        {
+            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+            useValue: { duration: 2500 },
+        },
     ],
     exports: [OfficialStampsComponent],
 })

@@ -11,6 +11,9 @@ import { PartialsModule } from './partials/partials.module';
 import { registerLocaleData } from '@angular/common';
 import ptBr from '@angular/common/locales/pt';
 import { AuthModule } from './core/auth/auth.module';
+import { InterceptorModule } from './core/interceptor/interceptor.module';
+import { DisableButtonByRoleDirective } from './core/directives/disable-button-by-role.directive';
+import { DirectivesModule } from './core/directives/directives.module';
 
 registerLocaleData(ptBr);
 
@@ -24,6 +27,7 @@ registerLocaleData(ptBr);
         NgbModule,
         PartialsModule,
         AuthModule,
+        InterceptorModule,
     ],
     providers: [
         { provide: LOCALE_ID, useValue: 'pt' },

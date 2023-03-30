@@ -16,8 +16,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {
+    MatSnackBarModule,
+    MAT_SNACK_BAR_DEFAULT_OPTIONS,
+} from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { DirectivesModule } from '@portal/core/directives/directives.module';
 import { PipesModule } from '@portal/core/pipes/pipes.module';
 import { RegistryOfficeService } from '@portal/pages/registry-offices/services/registry-office.service';
 import { LoaderModule } from 'src/app/partials/loader/loader.module';
@@ -53,6 +59,8 @@ import { RegistryOfficesResolver } from './registry-offices.resolver';
         MatChipsModule,
         RegistryOfficeRoutingModule,
         PipesModule,
+        MatSnackBarModule,
+        DirectivesModule,
     ],
     providers: [
         RegistryOfficeService,
@@ -68,6 +76,10 @@ import { RegistryOfficesResolver } from './registry-offices.resolver';
                 disableClose: true,
                 useValue: { scrollStrategy: new NoopScrollStrategy() },
             },
+        },
+        {
+            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+            useValue: { duration: 2500 },
         },
     ],
     exports: [RegistryOfficeComponent],

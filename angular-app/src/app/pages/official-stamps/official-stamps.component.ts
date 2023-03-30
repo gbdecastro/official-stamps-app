@@ -107,10 +107,6 @@ export class OfficialStampsComponent implements OnInit {
         this.officialService
             .getAll()
             .pipe(
-                catchError((data) => {
-                    this.matSnackBar.open('Something is wrong!', 'Close');
-                    return of(null);
-                }),
                 map((data) => {
                     if (data) return data.data;
                     return [];
@@ -136,10 +132,6 @@ export class OfficialStampsComponent implements OnInit {
                 }),
                 finalize(() => {
                     this.loading = false;
-                }),
-                catchError(() => {
-                    this.matSnackBar.open('Something is wrong!', 'Close');
-                    return of(null);
                 })
             )
             .subscribe((data) => {
@@ -163,10 +155,6 @@ export class OfficialStampsComponent implements OnInit {
                 }),
                 finalize(() => {
                     this.loading = false;
-                }),
-                catchError(() => {
-                    this.matSnackBar.open('Something is wrong!', 'Close');
-                    return of(null);
                 })
             )
             .subscribe((data) => {

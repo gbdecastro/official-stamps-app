@@ -18,8 +18,14 @@ export class Interceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
-                if (error.status == 403) {
+                const notAuthorized = [403, 401];
+
+                if (notAuthorized.includes(error.status)) {
                     this._snackBar.open('Not Authorized!', 'Close');
+                } else if (error.status === 0) {
+                    this._snackBar.open('You are Offline', 'Close');
+                } else {
+                    this._snackBar.open('Something wrong happened', 'Close');
                 }
 
                 return throwError(error.message);

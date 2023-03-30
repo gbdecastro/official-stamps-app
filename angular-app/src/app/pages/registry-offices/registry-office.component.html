@@ -24,9 +24,11 @@
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-                <button mat-icon-button color="primary" (click)="onAdd()">
-                    <mat-icon>add</mat-icon>
-                </button>
+                <div class="d-inline-block" appDisableButtonByRole="admin">
+                    <button mat-icon-button color="primary" (click)="onAdd()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
             </div>
 
             <table mat-table [dataSource]="dataSource" matSort>
@@ -39,12 +41,16 @@
                                 {{element.wallet.balance | currency}}
                             </ng-container>
                             <ng-container *ngSwitchCase="'actions'">
-                                <button mat-icon-button (click)="onEdit(element)">
-                                    <mat-icon class="text-primary">edit</mat-icon>
-                                </button>
-                                <button mat-icon-button color="primary" (click)="onDetails(element.id)">
-                                    <mat-icon class="text-simple">description</mat-icon>
-                                </button>
+                                <div class="d-inline-block" appDisableButtonByRole="admin">
+                                    <button mat-icon-button (click)="onEdit(element)">
+                                        <mat-icon class="text-primary">edit</mat-icon>
+                                    </button>
+                                </div>
+                                <div class="d-inline-block">
+                                    <button mat-icon-button color="primary" (click)="onDetails(element.id)">
+                                        <mat-icon class="text-simple">description</mat-icon>
+                                    </button>
+                                </div>
                             </ng-container>
                             <ng-container *ngSwitchDefault>
                                 {{element[column]}}

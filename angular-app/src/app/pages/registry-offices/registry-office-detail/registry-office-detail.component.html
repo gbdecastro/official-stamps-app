@@ -67,7 +67,6 @@
                         <div class="d-flex align-items-center gap-2">
                             <mat-chip class="badge bg-primary p-2">
                                 <span class="text-white">
-                                    <!-- {{ getTotalPerOfficialStamp(officialStamp.name) | secret:officialStampSecret[officialStamp.id] }} -->
                                     {{ officialStamp.value | currency | secret:officialStampSecret[officialStamp.id] }}
                                 </span>
                             </mat-chip>
@@ -92,7 +91,7 @@
                         </div>
                         <div>{{ totalPerOfficialStamps[officialStamp.name] }}</div>
                     </div>
-                    <div class="d-flex">
+                    <div class="d-flex" appDisableButtonByRole="admin">
                         <button class="text-light" color="primary" mat-raised-button (click)="onBuy(officialStamp)">
                             Buy
                         </button>
