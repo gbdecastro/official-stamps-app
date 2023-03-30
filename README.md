@@ -28,15 +28,7 @@
 ```bash
   sudo chmod +x ./start.sh && ./start.sh
 ```
-
-**4. Get WSL IP**:
-
-```bash
-  ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1
-  <your-ip>
-```
-
-**5. Setup Keycloak**
+**4. Setup Keycloak**
 _When the message [**"Waiting for setup of keycloak..."**] in prompt was presented_:
 
 - Go to Keycloak [http://`<your-ip>`:8080/admin/master/console/#/official-stamps-portal](http://`<your-ip>`:8080/admin/master/console/#/official-stamps-portal)
