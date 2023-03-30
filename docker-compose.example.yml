@@ -1,0 +1,59 @@
+version: '3'
+services:
+
+  postgres-db:
+    image: "postgres"
+    container_name: postgres-db
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=official_stamp_portal_db
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postgres
+
+  ethereum-network:
+    build:
+      context: ./eth-network
+      dockerfile: Dockerfile.dev
+    container_name: ethereum-network
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    command: --datadir /ethereum-network/node1 --syncmode "full" --nodiscover --http --http.addr 0.0.0.0 --http.port 8545 --http.api "personal,eth,net,admin,web3,txpool,miner" --http.corsdomain "*" --mine --miner.threads 4 --miner.etherbase '0xf8717030f744339104c0b8e1b73799c9931687cb' --port 30303 --networkid 12345 --allow-insecure-unlock --unlock 0xf8717030f744339104c0b8e1b73799c9931687cb --password /ethereum-network/node1/password --authrpc.port 8552 --maxpeers 0
+  
+  nest-app:
+    build:
+      context: ./nest-app
+      dockerfile: Dockerfile.dev
+    container_name: nest-app
+    environment:
+      KEYCLOAK_URL: http://<your-ip>:8080
+      KEYCLOAK_REALM: official-stamps-portal
+      KEYCLOAK_CLIENT_ID: official-stamps-api
+      KEYCLOAK_CLIENT_SECRET: <client-secret>
+    ports:
+      - 3000:3000
+    depends_on:
+      - ethereum-network
+      - postgres-db
+    volumes:
+      - ./nest-app:/backend-app
+      - /backend-app/node_modules      
+
+  angular-app:
+    build:
+      context: ./angular-app
+      dockerfile: Dockerfile.dev
+    container_name: angular-app
+    ports:
+      - 4200:4200
+    depends_on:
+      - nest-app
+    volumes:
+      - ./angular-app:/frontend-app
+      - /frontend-app/node_modules
+
+volumes:
+  postgres-volume:

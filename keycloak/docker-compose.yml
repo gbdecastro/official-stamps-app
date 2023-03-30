@@ -1,0 +1,41 @@
+version: '3'
+services:
+  db:
+      image: "postgres"
+      container_name: db
+      volumes:
+        - keycloak-db-volume:/var/lib/postgresql/data
+      ports:
+        - 5433:5433
+      environment:
+        - POSTGRES_DB=keycloak
+        - POSTGRES_PASSWORD=secret
+        - POSTGRES_USER=postgres
+      command: -p 5433
+      
+  server:
+    image: quay.io/keycloak/keycloak:21.0.1
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./realm:/opt/keycloak/data/import
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME: 172.24.176.130
+      KC_DB: postgres
+      KC_DB_URL_HOST: db
+      KC_DB_URL_PORT: 5433
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: secret  
+      KC_DB_SCHEMA: public
+    depends_on:
+      - db
+    command:
+      - start-dev
+      - --import-realm
+
+volumes:
+  keycloak-db-volume:

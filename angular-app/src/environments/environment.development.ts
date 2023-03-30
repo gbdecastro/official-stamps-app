@@ -1,9 +1,9 @@
 export const environment = {
-    BASE_URL_API: 'http://<your-ip>:3000/api/v1',
-    ETHEREM_NETWORK: 'http://<your-ip>:8545/',
+    BASE_URL_API: 'http://172.24.176.130:3000/api/v1',
+    ETHEREM_NETWORK: 'http://172.24.176.130:8545/',
     keycloak: {
         config: {
-            url: 'http://<your-ip>:8080',
+            url: 'http://172.24.176.130:8080',
             realm: 'official-stamps-portal',
             clientId: 'official-stamps-app',
         },

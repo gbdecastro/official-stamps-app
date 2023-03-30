@@ -1,0 +1,11 @@
+FROM ethereum/client-go
+
+WORKDIR /ethereum-network
+
+COPY . .
+
+RUN geth init --datadir /ethereum-network/node1 /ethereum-network/node1/genesis.json
+
+EXPOSE 8545
+
+EXPOSE 30303
