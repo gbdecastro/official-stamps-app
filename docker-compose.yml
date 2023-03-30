@@ -29,10 +29,10 @@ services:
       dockerfile: Dockerfile.dev
     container_name: nest-app
     environment:
-      KEYCLOAK_URL: http://172.24.176.130/:8080
+      KEYCLOAK_URL: http://<your-ip>:8080
       KEYCLOAK_REALM: official-stamps-portal
       KEYCLOAK_CLIENT_ID: official-stamps-api
-      KEYCLOAK_CLIENT_SECRET: QRlRS45Q202UEQRZqgMyHIqDtTVx4fKC
+      KEYCLOAK_CLIENT_SECRET: <client-secret>
     ports:
       - 3000:3000
     depends_on:
