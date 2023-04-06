@@ -1,0 +1,19 @@
+# Base image
+FROM node:18
+
+# Create app directory
+WORKDIR /quasar-app
+
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+
+# Install app dependencies
+RUN npm install
+
+# Bundle app source
+COPY . .
+
+# Start the server using the local enviroment
+CMD [ "npm", "dev" ]
+
+EXPOSE 5000

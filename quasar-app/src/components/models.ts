@@ -9,6 +9,7 @@ export interface Meta {
 
 export interface IMenu {
   path: string;
+  name: string;
   title: string;
   icon: string;
 }

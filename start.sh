@@ -5,6 +5,7 @@ cp -f docker-compose.example.yml docker-compose.yml
 cp -f keycloak/docker-compose.example.yml keycloak/docker-compose.yml
 cp -f nest-app/.env.example  nest-app/.env.dev
 cp -f angular-app/cypress.config.example.ts  angular-app/cypress.config.ts
+cp -f quasar-app/.env.example quasar-app/.env
 
 # GET IP WSL
 IP=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | sed 's/\/.*//')
@@ -27,6 +28,9 @@ sed -i "s/<your-ip>/$IP/" angular-app/src/environments/environment.development.t
 
 echo "Updating in angular-app/cypress.config.ts"
 sed -i "s/<your-ip>/$IP/" angular-app/cypress.config.ts
+
+echo "Updating in quasar-app/.env"
+sed -i "s/<your-ip>/$IP/" quasar-app/.env
 
 # EXECUTE Docker-compose of Keycloak
 cd keycloak && docker-compose up -d

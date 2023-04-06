@@ -1,32 +1,46 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <div class="btn-drawer">
-      <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+      <q-btn
+        flat
+        dense
+        round
+        icon="menu"
+        aria-label="Menu"
+        @click="toggleLeftDrawer"
+      />
     </div>
 
-    <div>
+    <div></div>
 
-    </div>
-
-    <q-drawer class="drawer" v-model="leftDrawerOpen" :width="100" :breakpoint="500" bordered show-if-above>
+    <q-drawer
+      class="drawer"
+      v-model="leftDrawerOpen"
+      :width="100"
+      :breakpoint="500"
+      bordered
+      show-if-above
+    >
       <q-scroll-area class="fit">
-
         <q-separator inset />
 
         <div class="logo">
-          <img src="~assets/qr_code.svg">
+          <img src="~assets/qr_code.svg" />
         </div>
 
         <q-separator inset />
 
         <div class="item-menu">
           <q-list>
-            <MenuItem v-for="link in menuLinks" :key="link.path" v-bind="link" />
+            <MenuItem
+              v-for="link in menuLinks"
+              :key="link.path"
+              v-bind="link"
+            />
           </q-list>
         </div>
 
         <q-separator inset />
-
       </q-scroll-area>
     </q-drawer>
 
@@ -35,7 +49,6 @@
         <router-view />
       </q-page>
     </q-page-container>
-
   </q-layout>
 </template>
 
@@ -70,7 +83,7 @@
   margin-bottom: 2rem;
   cursor: pointer;
 
-  &>img {
+  & > img {
     width: 25%;
     height: 25%;
   }
@@ -96,12 +109,14 @@ const menuLinks: IMenu[] = [
   {
     icon: 'apartment',
     path: 'registry-offices',
-    title: 'Registry Offices'
+    title: 'Registry Offices',
+    name: 'registry-offices',
   },
   {
     icon: 'branding_watermark',
     path: 'official-stamps',
-    title: 'Official Stamps'
+    title: 'Official Stamps',
+    name: 'official-stamps',
   },
 ];
 
@@ -109,19 +124,19 @@ export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    MenuItem
+    MenuItem,
   },
 
   setup() {
-    const leftDrawerOpen = ref(false)
+    const leftDrawerOpen = ref(false);
 
     return {
       menuLinks: menuLinks,
       leftDrawerOpen,
       toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
+        leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+    };
+  },
 });
 </script>

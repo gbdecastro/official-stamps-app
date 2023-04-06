@@ -4,7 +4,7 @@
       <q-tooltip>
         {{ title }}
       </q-tooltip>
-      <q-icon color="grey" @click="onRouter(path)" :name="icon" />
+      <q-icon :color="itemActive(name)" @click="onRouter(path)" :name="icon" />
     </q-item-section>
   </q-item>
 </template>
@@ -18,22 +18,30 @@ export default defineComponent({
     path: {
       type: String,
       required: true,
-      default: ''
+      default: '',
     },
     title: {
       required: true,
-      default: ''
+      default: '',
     },
     icon: {
       type: String,
       required: true,
-      default: ''
-    }
+      default: '',
+    },
+    name: {
+      type: String,
+      required: true,
+      default: '',
+    },
   },
   methods: {
     onRouter(path: string) {
-      this.$router.push(path)
-    }
-  }
+      this.$router.push(path);
+    },
+    itemActive(name: string): string {
+      return this.$route.name === name ? 'primary' : 'grey';
+    },
+  },
 });
 </script>

@@ -55,5 +55,19 @@ services:
       - ./angular-app:/frontend-app
       - /frontend-app/node_modules
 
+  quasar-app:
+    build:
+      context: ./quasar-app
+      dockerfile: Dockerfile.dev
+    container_name: quasar-app
+    ports:
+      - 5000:5000
+    depends_on:
+      - nest-app
+    volumes:
+      - ./quasar-app:/quasar-app
+      - /quasar-app/node_modules
+      - /quasar-app/.quasar   
+
 volumes:
   postgres-volume:
