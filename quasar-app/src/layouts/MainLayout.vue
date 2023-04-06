@@ -101,42 +101,42 @@
 </style>
 
 <script lang="ts">
-import { IMenu } from '../components/models';
-import { defineComponent, ref } from 'vue';
-import MenuItem from '../components/MenuItem.vue';
+import { IMenu } from "../components/models";
+import { defineComponent, ref } from "vue";
+import MenuItem from "../components/MenuItem.vue";
 
 const menuLinks: IMenu[] = [
-  {
-    icon: 'apartment',
-    path: 'registry-offices',
-    title: 'Registry Offices',
-    name: 'registry-offices',
-  },
-  {
-    icon: 'branding_watermark',
-    path: 'official-stamps',
-    title: 'Official Stamps',
-    name: 'official-stamps',
-  },
+    {
+        icon: "apartment",
+        path: "registry-offices",
+        title: "Registry Offices",
+        name: "registry-offices",
+    },
+    {
+        icon: "branding_watermark",
+        path: "official-stamps",
+        title: "Official Stamps",
+        name: "official-stamps",
+    },
 ];
 
 export default defineComponent({
-  name: 'MainLayout',
+    name: "MainLayout",
 
-  components: {
-    MenuItem,
-  },
+    components: {
+        MenuItem,
+    },
 
-  setup() {
-    const leftDrawerOpen = ref(false);
+    setup() {
+        const leftDrawerOpen = ref(false);
 
-    return {
-      menuLinks: menuLinks,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-    };
-  },
+        return {
+            menuLinks: menuLinks,
+            leftDrawerOpen,
+            toggleLeftDrawer() {
+                leftDrawerOpen.value = !leftDrawerOpen.value;
+            },
+        };
+    },
 });
 </script>
