@@ -3,29 +3,47 @@ import Keycloak from "keycloak-js"
 import { boot } from "quasar/wrappers"
 import { KeycloakStore } from "../stores/keycloak-store"
 
-declare module "@vue/runtime-core" {
-    interface ComponentCustomProperties {
-        $axios: AxiosInstance
-        $api: AxiosInstance
-    }
+const keycloak = new Keycloak({
+    url: process.env.VUE_APP_KEYCLOAK_URL,
+    realm: process.env.VUE_APP_KEYCLOAK_REALM,
+    clientId: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
+})
+
+const httpApi = axios.create({
+    baseURL: process.env.VUE_APP_BASE_URL_API,
+})
+
+function interceptor(httpApi: AxiosInstance, keycloak: Keycloak): void {
+    httpApi.interceptors.request.use((config) => {
+        config.headers.Authorization = `Bearer ${keycloak.token}`
+        return config
+    })
+
+    httpApi.interceptors.response.use(
+        (config) => {
+            return config.data
+        },
+        async (reject) => {
+            if (reject.response.data.statusCode === 401) {
+                const token = await keycloak.updateToken(5)
+                httpApi.interceptors.request.use(
+                    (config) => {
+                        config.headers.Authorization = `Bearer ${token}`
+                        return config
+                    },
+                    (reject) => {
+                        console.error(reject)
+                    }
+                )
+                return httpApi(reject.config)
+            }
+            return Promise.reject(reject)
+        }
+    )
 }
 
-const keycloak = new Keycloak({
-    url: "http://172.24.176.130:8080",
-    realm: "official-stamps-portal",
-    clientId: "official-stamps-app",
-})
-
-const api = axios.create({
-    baseURL: "http://172.24.176.130:3000/api/v1",
-})
-
-export default boot(async ({ app, router }) => {
+export default boot(async ({ router }) => {
     const keycloakStore = KeycloakStore()
-
-    app.config.globalProperties.$axios = axios
-
-    app.config.globalProperties.$api = api
 
     await keycloak
         .init({
@@ -41,26 +59,7 @@ export default boot(async ({ app, router }) => {
                 keycloakStore.setToken(keycloak.token as string)
                 keycloakStore.setRefreshToken(keycloak.refreshToken as string)
                 keycloakStore.setTokenExpiration(keycloak.tokenParsed?.exp as number)
-
-                app.config.globalProperties.$api.interceptors.request.use(
-                    (config) => {
-                        config.headers.Authorization = `Bearer ${keycloak.token}`
-                        return config
-                    },
-                    async (reject) => {
-                        const token = await keycloak.updateToken(5)
-                        app.config.globalProperties.$api.interceptors.request.use(
-                            (config) => {
-                                config.headers.Authorization = `Bearer ${token}`
-                                return config
-                            },
-                            (reject) => {
-                                console.error(reject)
-                            }
-                        )
-                        console.error(reject)
-                    }
-                )
+                interceptor(httpApi, keycloak)
             } else {
                 await keycloak.login()
             }
@@ -77,3 +76,5 @@ export default boot(async ({ app, router }) => {
             console.error("Failed to initialize Keycloak", err)
         })
 })
+
+export { httpApi }

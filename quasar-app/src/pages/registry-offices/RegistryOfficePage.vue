@@ -9,7 +9,13 @@
                             <div class="text-h6">Registry Offices</div>
                         </div>
                         <div class="row items-center">
-                            <q-btn color="primary" round icon="refresh" />
+                            <q-btn
+                                @click="onLoadData()"
+                                flat
+                                round
+                                color="primary"
+                                icon="refresh"
+                            />
                         </div>
                     </div>
                 </q-card-section>
@@ -20,7 +26,7 @@
                     <div class="row justify-between">
                         <div class="qa">
                             <q-input
-                                debounce="1500"
+                                debounce="500"
                                 clearable
                                 clear-icon="close"
                                 filled
@@ -30,12 +36,13 @@
                             </q-input>
                         </div>
                         <div class="qa">
-                            <q-btn round color="green" icon="add" />
+                            <q-btn flat round color="green" icon="add" />
                         </div>
                     </div>
 
-                    <div class="q-pa-md">
+                    <div class="q-mt-md full-width">
                         <q-table
+                            :filter="filterInput"
                             flat
                             :grid="$q.screen.sm"
                             :bordered="$q.screen.sm"
@@ -59,9 +66,12 @@
                                         {{ props.row[col.name] }}
                                     </q-td>
                                     <q-td key="balance" :props="props">
-                                        {{ toCurrency(props.row.wallet.balance) }}
+                                        {{ $filters.toBRL(props.row.wallet.balance) }}
                                     </q-td>
-                                    <q-td key="actions" :props="props"> Actions </q-td>
+                                    <q-td key="actions" :props="props">
+                                        <q-btn flat round color="primary" icon="edit" />
+                                        <q-btn flat round color="grey-4" icon="description" />
+                                    </q-td>
                                 </q-tr>
                             </template>
                         </q-table>
@@ -73,14 +83,16 @@
 </template>
 
 <script lang="ts">
+import { AxiosResponse } from "axios"
 import { QTableColumn } from "quasar"
 import { defineComponent } from "vue"
 import { IRegistryOfficeResponse } from "./interfaces/response.interface"
+import RegistryOfficeService from "./services/registry-offices.service"
 
 export default defineComponent({
     name: "RegistryOfficePage",
     created() {
-        this.onData()
+        this.onLoadData()
     },
     data() {
         const rows: IRegistryOfficeResponse[] = []
@@ -125,6 +137,8 @@ export default defineComponent({
                 label: "Balance (R$)",
                 field: "balance",
                 align: "left",
+                sort: (a, b) => parseFloat(a) - parseFloat(b),
+                sortable: true,
             },
             {
                 name: "actions",
@@ -148,21 +162,15 @@ export default defineComponent({
         }
     },
     methods: {
-        onData() {
-            this.$api.get("/registry-offices").then((response) => {
-                this.rows = response.data.data
-                this.loading = false
-            })
-        },
-        toCurrency(value: string): string {
-            const format = new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 3,
-            })
+        onLoadData() {
+            this.loading = true
 
-            return format.format(parseFloat(value))
+            RegistryOfficeService.getInstance()
+                .get()
+                .then((response: AxiosResponse<IRegistryOfficeResponse[]>) => {
+                    this.rows = response.data
+                    this.loading = false
+                })
         },
     },
 })

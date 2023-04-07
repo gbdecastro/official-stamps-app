@@ -10,11 +10,14 @@
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const { configure } = require("quasar/wrappers");
+const { configure } = require("quasar/wrappers")
+
+const DotEnv = require("dotenv")
+DotEnv.config()
 
 module.exports = configure(function (ctx) {
     return {
-    // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
+        // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
         supportTS: {
             tsCheckerConfig: {
                 eslint: {
@@ -30,7 +33,7 @@ module.exports = configure(function (ctx) {
         // app boot file (/src/boot)
         // --> boot files are part of "main.js"
         // https://v2.quasar.dev/quasar-cli-webpack/boot-files
-        boot: ["i18n", "keycloak"],
+        boot: ["i18n", "keycloak", "filters"],
 
         // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
         css: ["app.scss"],
@@ -51,6 +54,14 @@ module.exports = configure(function (ctx) {
         // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
         build: {
             vueRouterMode: "history", // available values: 'hash', 'history'
+
+            env: {
+                VUE_APP_BASE_URL_API: process.env.VUE_APP_BASE_URL_API,
+                VUE_APP_ETHERuEM_NETWORK: process.env.VUE_APP_ETHERuEM_NETWORK,
+                VUE_APP_KEYCLOAK_URL: process.env.VUE_APP_KEYCLOAK_URL,
+                VUE_APP_KEYCLOAK_REALM: process.env.VUE_APP_KEYCLOAK_REALM,
+                VUE_APP_KEYCLOAK_CLIENT_ID: process.env.VUE_APP_KEYCLOAK_CLIENT_ID,
+            },
 
             // transpile: false,
             // publicPath: '/',
@@ -85,7 +96,9 @@ module.exports = configure(function (ctx) {
 
         // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework
         framework: {
-            config: {},
+            config: {
+                loadingBar: { skipHijack: true },
+            },
 
             // iconSet: 'material-icons', // Quasar icon set
             // lang: 'en-US', // Quasar language pack
@@ -98,7 +111,7 @@ module.exports = configure(function (ctx) {
             // directives: [],
 
             // Quasar plugins
-            plugins: [],
+            plugins: ["LoadingBar"],
         },
 
         // animations: 'all', // --- includes all animations
@@ -216,5 +229,5 @@ module.exports = configure(function (ctx) {
                 // extendWebpackPreload also available besides this chainWebpackPreload
             },
         },
-    };
-});
+    }
+})

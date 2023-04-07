@@ -1,11 +1,7 @@
 {
-  "extends": "@quasar/app-webpack/tsconfig-preset",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": [
-        "src/components/*"
-      ],
-    },
-  }
+    "extends": "@quasar/app-webpack/tsconfig-preset",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {}
+    }
 }
